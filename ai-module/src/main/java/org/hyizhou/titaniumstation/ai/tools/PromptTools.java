@@ -1,6 +1,7 @@
 package org.hyizhou.titaniumstation.ai.tools;
 
 import org.hyizhou.titaniumstation.ai.entity.DialogEntity;
+import org.hyizhou.titaniumstation.ai.entity.MessageEntity;
 import org.hyizhou.titaniumstation.ai.exception.NotFoundRoleException;
 import org.hyizhou.titaniumstation.ai.qwen.QwenChatOptions;
 import org.hyizhou.titaniumstation.common.ai.request.ContentReq;
@@ -12,11 +13,23 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.openai.OpenAiChatOptions;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Prompt 工厂
  * @date 2024/5/17
  */
 public class PromptTools {
+
+    public static Prompt generatePrompt(ContentReq req, DialogEntity dialog, List<MessageEntity> messages){
+        List<Message> updateMessage = messages.stream().map(entity -> {
+            return PromptTools.generateMessage(entity.getContent(), entity.getRole());
+        }).collect(Collectors.toList());
+        updateMessage.add(generateMessage(req.content(), req.role()));
+        ChatOptions options = generateOptions(dialog.getModel(), dialog.getServiceProvider());
+        return new Prompt(updateMessage, options);
+    }
 
     public static Prompt generatePrompt(ContentReq req, DialogEntity dialog){
         ChatOptions options = generateOptions(dialog.getModel(), dialog.getServiceProvider());

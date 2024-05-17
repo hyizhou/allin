@@ -33,7 +33,7 @@ public class DbHistoryRepository implements HistoryRepositoryTypeEntity {
     @Transactional
     public List<MessageEntity> append(MessageEntity message) {
         messageDao.save(message);
-        return messageDao.findAllByDialog(message.getDialog(), Sort.by(Sort.Direction.ASC, "sequence"));
+        return messageDao.findAllByDialog(message.getDialog(), Sort.by(Sort.Direction.ASC, "timestamp"));
     }
 
     @Override
