@@ -1,0 +1,27 @@
+
+group = 'org.hyizhou.titaniumstation'
+version = '0.0.1-SNAPSHOT'
+
+
+dependencies {
+    implementation(project(":common"))
+    // 跨平台获取操作系统和硬件信息的库，API 文档地址：https://www.oshi.ooo/oshi-core-java11/apidocs/com.github.oshi/module-summary.html
+    implementation 'com.github.oshi:oshi-core-java11:6.4.10'
+    // redis 依赖
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // jackson 依赖
+    implementation('com.fasterxml.jackson.core:jackson-databind')
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,35 @@
+plugins {
+//    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.21'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.21'
+}
+
+group = 'org.hyizhou.titaniumstation'
+version = '0.0.1-SNAPSHOT'
+
+
+dependencies {
+    implementation project(":system-status")
+    implementation project(":common")
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'  // kotlin 语言支持
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+//    implementation 'org.springframework.boot:srping-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+}
+
+
+test {
+    useJUnitPlatform()
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}

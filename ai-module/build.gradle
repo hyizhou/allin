@@ -1,0 +1,29 @@
+plugins {
+    id 'java-library'
+}
+
+group = 'org.hyizhou.titaniumstation'
+version = '0.0.1-SNAPSHOT'
+
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation project(":common")
+    implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation('com.alibaba:dashscope-sdk-java:2.13.0'){  // 这里还包含了 lombok 注意
+        exclude group: 'org.slf4j', module:'slf4j-simple'  // 和Spring内置的日志冲突
+    }
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'  // 主要用于产生配置类产生配置提示
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+}
+
+test {
+    useJUnitPlatform()
+}

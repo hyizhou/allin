@@ -1,0 +1,32 @@
+// 此模块用于存储公共代码、大部分配置文件
+plugins {
+    id 'java-library'
+}
+
+
+group = 'org.hyizhou'
+version = '0.0.1'
+
+//sourceSets {
+//    main{
+//        resources {
+//            srcDir 'src/main/resources'
+//            includes = ['**/*.yml', '**/*.yaml', '**/*.properties'] // 包含特定的文件模式
+//        }
+//    }
+//}
+
+dependencies {
+    // jackson 依赖
+    api 'com.fasterxml.jackson.core:jackson-databind'
+    // redis 依赖
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'  //Jackson依赖
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'  //jpa依赖
+}
+
+test {
+    useJUnitPlatform()
+}
