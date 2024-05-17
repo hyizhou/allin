@@ -1,9 +1,11 @@
 package org.hyizhou.titaniumstation.ai.config;
 
 import org.hyizhou.titaniumstation.ai.processor.ChatRespProcessorChain;
+import org.hyizhou.titaniumstation.ai.processor.HistoryRepositoryTypeEntity;
+import org.hyizhou.titaniumstation.ai.processor.HistoryRepositoryTypeMessage;
 import org.hyizhou.titaniumstation.ai.processor.PromptProcessorChain;
 import org.hyizhou.titaniumstation.ai.processor.imp.AppendHistoryPromptProcessor;
-import org.hyizhou.titaniumstation.ai.processor.HistoryRepositoryTypeMessage;
+import org.hyizhou.titaniumstation.ai.processor.imp.SaveHistoryChatRespProcessor;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +26,11 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public AppendHistoryPromptProcessor appendHistoryPromptProcessor(HistoryRepositoryTypeMessage historyRepository) {
-        return new AppendHistoryPromptProcessor(historyRepository);
+    public AppendHistoryPromptProcessor appendHistoryPromptProcessor(
+            HistoryRepositoryTypeMessage historyRepository,
+            HistoryRepositoryTypeEntity historyRepositoryEntity
+    ) {
+        return new AppendHistoryPromptProcessor(historyRepository, historyRepositoryEntity);
     }
 
     /**
@@ -46,7 +51,13 @@ public class ApplicationConfiguration {
      * 创建chat响应处理链
      * @return 处理链对象
      */
-    public ChatRespProcessorChain chatRespProcessorChain() {
-        return new ChatRespProcessorChain();
+    @Bean
+    public ChatRespProcessorChain chatRespProcessorChain(
+            SaveHistoryChatRespProcessor saveHistoryChatRespProcessor
+    ) {
+        ChatRespProcessorChain chain = new ChatRespProcessorChain();
+        chain.addProcessor(saveHistoryChatRespProcessor);
+        return chain;
     }
+
 }

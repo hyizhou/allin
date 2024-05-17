@@ -21,7 +21,7 @@ public class MessageEntity {
     @JoinColumn(name = "dialog_id", nullable = false)
     private DialogEntity dialog;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Integer sequence;
 
     @Column(nullable = false, columnDefinition = "TEXT")
@@ -31,5 +31,8 @@ public class MessageEntity {
     private LocalDateTime timestamp;
 
     @Column(nullable = false)
-    private Boolean isFromAi;
+    private String role;
+
+    @Column(nullable = false)
+    private String type;
 }

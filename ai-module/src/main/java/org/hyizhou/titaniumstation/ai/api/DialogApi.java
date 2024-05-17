@@ -1,11 +1,8 @@
 package org.hyizhou.titaniumstation.ai.api;
 
 import org.hyizhou.titaniumstation.ai.service.DialogService;
-import org.hyizhou.titaniumstation.common.ai.model.CreationDialogModel;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.hyizhou.titaniumstation.common.ai.request.CreationDialogReq;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 会话相关api
@@ -22,7 +19,13 @@ public class DialogApi {
 
 
     @PostMapping("/create")
-    public String createDialog(@RequestBody CreationDialogModel model){
+    public String createDialog(@RequestBody CreationDialogReq model){
         return dialogService.create(model);
+    }
+
+
+    @DeleteMapping("/delete")
+    public void deleteDialog(String dialogId){
+        dialogService.delete(dialogId);
     }
 }

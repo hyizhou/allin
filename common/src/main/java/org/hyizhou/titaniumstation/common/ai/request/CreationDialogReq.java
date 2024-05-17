@@ -1,11 +1,11 @@
-package org.hyizhou.titaniumstation.common.ai.model;
+package org.hyizhou.titaniumstation.common.ai.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * 创建对话模型
  */
-public record CreationDialogModel(
+public record CreationDialogReq(
         /*
         服务商名称
          */

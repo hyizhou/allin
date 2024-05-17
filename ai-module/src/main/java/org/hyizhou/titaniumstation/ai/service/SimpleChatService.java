@@ -5,7 +5,7 @@ import org.hyizhou.titaniumstation.ai.exception.NotFoundRoleException;
 import org.hyizhou.titaniumstation.ai.processor.PromptProcessorChain;
 import org.hyizhou.titaniumstation.ai.qwen.QwenChatClient;
 import org.hyizhou.titaniumstation.ai.qwen.QwenChatOptions;
-import org.hyizhou.titaniumstation.common.ai.model.MessageRequest;
+import org.hyizhou.titaniumstation.common.ai.request.MessageRequest;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,30 +28,24 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 所有对AI都经过这里，进行分拣，然后调用不同大模型接口
+ * 简单、临时的聊天服务
  * @author hyizhou
  * @date 2024/5/15
  */
 @Service
-public class AiMainServer {
+public class SimpleChatService {
     private final ApplicationContext applicationContext;
-    private final PromptProcessorChain promptProcessorChain;
-    private final Logger logger = LoggerFactory.getLogger(AiMainServer.class);
+    private final Logger logger = LoggerFactory.getLogger(SimpleChatService.class);
 
-    public AiMainServer(ApplicationContext applicationContext, PromptProcessorChain promptProcessorChain) {
+    public SimpleChatService(ApplicationContext applicationContext, PromptProcessorChain promptProcessorChain) {
         this.applicationContext = applicationContext;
-        this.promptProcessorChain = promptProcessorChain;
     }
 
     public ChatResponse chat(MessageRequest messageRequest){
         ChatClient chatClient = getChatClientByClient(messageRequest.client());
         ChatOptions options = generateOptions(messageRequest.modelName(), messageRequest.client());
         Prompt prompt = generatePrompt(messageRequest.message(), messageRequest.role(), options);
-        prompt = promptProcessorChain.process(prompt);
-        ChatResponse response = chatClient.call(prompt);
-        Prompt responesPrompt = generatePrompt(response.getResult().getOutput().getContent(), "assistant", null);
-        promptProcessorChain.process(responesPrompt);
-        return response;
+        return chatClient.call(prompt);
     }
 
     public Flux<ChatResponse> steam(MessageRequest messageRequest){

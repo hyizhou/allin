@@ -19,6 +19,9 @@ public class UserEntity {
     @Column
     private String name;
 
+    public UserEntity() {
+    }
+
     public int getId() {
         return id;
     }

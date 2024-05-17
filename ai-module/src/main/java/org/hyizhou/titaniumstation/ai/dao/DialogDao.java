@@ -9,4 +9,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface DialogDao extends JpaRepository<DialogEntity, String> {
+    /**
+     * 判断是否同时存在userId和dialogId
+     */
+    boolean existsByDialogIdAndUserId(String dialogId, int userId);
 }

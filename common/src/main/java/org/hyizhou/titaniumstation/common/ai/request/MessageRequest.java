@@ -1,4 +1,4 @@
-package org.hyizhou.titaniumstation.common.ai.model;
+package org.hyizhou.titaniumstation.common.ai.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
