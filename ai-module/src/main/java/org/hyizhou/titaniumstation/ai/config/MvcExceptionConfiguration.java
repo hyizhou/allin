@@ -37,9 +37,9 @@ public class MvcExceptionConfiguration {
     /**
      * 处理通用的RuntimeException
      */
-    @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleRuntimeException(RuntimeException ex){
-        return ex.getLocalizedMessage();
-    }
+//    @ExceptionHandler(RuntimeException.class)
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    public String handleRuntimeException(RuntimeException ex){
+//        return ex.getLocalizedMessage();
+//    }
 }

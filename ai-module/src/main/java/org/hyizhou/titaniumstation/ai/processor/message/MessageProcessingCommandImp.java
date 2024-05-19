@@ -1,13 +1,15 @@
-package org.hyizhou.titaniumstation.ai.processor.command;
+package org.hyizhou.titaniumstation.ai.processor.message;
 
 import org.hyizhou.titaniumstation.ai.pojo.MessageContext;
 import org.hyizhou.titaniumstation.common.ai.request.ContentReq;
 import org.hyizhou.titaniumstation.common.ai.response.ContentResp;
+import org.springframework.stereotype.Component;
 
 /**
  * 对话聊天模式命令模式实现
  * @date 2024/5/17
  */
+@Component
 public class MessageProcessingCommandImp implements MessageProcessingCommand {
     private final CheckUserMessageProcessor checkUserMessageProcessor;
     private final AddDialogParamProcessor addDialogParamProcessor;
@@ -43,8 +45,8 @@ public class MessageProcessingCommandImp implements MessageProcessingCommand {
         messageContext = historyAppendProcessor.process(messageContext);
         messageContext = generationPromptProcessor.process(messageContext);
         messageContext = aiInvocationProcessor.process(messageContext);
-        messageContext = saveHistoryProcessor.process(messageContext);
         messageContext = generationRespProcessor.process(messageContext);
+        messageContext = saveHistoryProcessor.process(messageContext);
         return messageContext.getContentResp();
     }
 }

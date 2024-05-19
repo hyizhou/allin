@@ -2,6 +2,7 @@ package org.hyizhou.titaniumstation.ai.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hyizhou.titaniumstation.common.entity.UserEntity;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
  * @date 2024/5/16
  */
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "dialogs")
 public class DialogEntity {
@@ -34,6 +36,7 @@ public class DialogEntity {
     @Column(columnDefinition = "TEXT")
     private String dialogsSummary; // 假设使用TEXT类型存储对话总结
 
-    // 构造函数
-    public DialogEntity() {}
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "history_strategy_id", nullable = true)
+    private HistoryStrategyEntity historyStrategy;
 }

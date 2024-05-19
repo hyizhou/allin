@@ -1,12 +1,12 @@
-package org.hyizhou.titaniumstation.ai.processor.command;
+package org.hyizhou.titaniumstation.ai.processor.message;
 
 import org.hyizhou.titaniumstation.ai.dao.DialogDao;
 import org.hyizhou.titaniumstation.ai.exception.NotFoundDialogException;
 import org.hyizhou.titaniumstation.ai.pojo.MessageContext;
-import org.hyizhou.titaniumstation.ai.processor.MessageProcessor;
 import org.hyizhou.titaniumstation.ai.service.UserService;
 import org.hyizhou.titaniumstation.common.ai.request.ContentReq;
 import org.hyizhou.titaniumstation.common.entity.UserEntity;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
  * 检查用户消息的处理器
  * @date 2024/5/17
  */
+@Component
 public class CheckUserMessageProcessor implements MessageProcessor {
     private final DialogDao dialogDao;
     private final UserService userService;

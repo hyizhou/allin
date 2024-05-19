@@ -26,7 +26,7 @@ public class MessageEntity {
     private DialogEntity dialog;
 
     @Column(nullable = true)
-    private Integer sequence;
+    private Boolean isSummary;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;

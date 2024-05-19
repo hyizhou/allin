@@ -1,4 +1,4 @@
-package org.hyizhou.titaniumstation.ai.processor;
+package org.hyizhou.titaniumstation.ai.processor.message;
 
 import org.hyizhou.titaniumstation.ai.pojo.MessageContext;
 

@@ -1,15 +1,16 @@
-package org.hyizhou.titaniumstation.ai.processor.command;
+package org.hyizhou.titaniumstation.ai.processor.message;
 
 import org.hyizhou.titaniumstation.ai.pojo.MessageContext;
-import org.hyizhou.titaniumstation.ai.processor.MessageProcessor;
 import org.hyizhou.titaniumstation.common.ai.response.ContentResp;
 import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.messages.MessageType;
+import org.springframework.stereotype.Component;
 
 /**
  * 生成响应对象处理器
  * @date 2024/5/17
  */
+@Component
 public class GenerationRespProcessor implements MessageProcessor {
     @Override
     public MessageContext process(MessageContext context) {

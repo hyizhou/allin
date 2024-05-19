@@ -1,4 +1,4 @@
-package org.hyizhou.titaniumstation.ai.processor.command;
+package org.hyizhou.titaniumstation.ai.processor.message;
 
 import org.hyizhou.titaniumstation.common.ai.request.ContentReq;
 import org.hyizhou.titaniumstation.common.ai.response.ContentResp;

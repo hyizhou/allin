@@ -19,11 +19,14 @@ import java.util.List;
 public class MessageContext {
     private ContentReq contentReq;
     private ContentResp contentResp;
-//    private ChatOptions chatOptions;
     private Prompt prompt;
     private ChatResponse chatResponse;
     private DialogEntity dialog;
-    private List<MessageEntity> messages;
+    private List<MessageEntity> historyMessages;
+    /*
+    历史总结
+     */
+    private MessageEntity summaryEntity;
     /*
     请求消息的时间
      */
