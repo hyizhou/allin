@@ -45,4 +45,9 @@ public class ChatApi {
         return simpleChatService.chat(request);
     }
 
+    @PostMapping("/simpleStreamChat")
+    public Flux<ChatResponse> doSimpleStreamChat(@RequestBody MessageRequest request){
+        return simpleChatService.steam(request);
+    }
+
 }

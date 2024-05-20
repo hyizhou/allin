@@ -6,7 +6,7 @@ import org.hyizhou.titaniumstation.common.ai.response.ContentResp;
 import org.springframework.stereotype.Component;
 
 /**
- * 对话聊天模式命令模式实现
+ * 处理对话聊天命令模式实现
  * @date 2024/5/17
  */
 @Component
