@@ -1,6 +1,6 @@
-package org.hyizhou.titaniumstation.ai.qwen.metadata;
+package org.hyizhou.titaniumstation.ai.llmClient.qwen.metadata;
 
-import org.hyizhou.titaniumstation.ai.qwen.QwenAiApi;
+import org.hyizhou.titaniumstation.ai.llmClient.qwen.QwenAiApi;
 import org.springframework.ai.chat.metadata.Usage;
 
 /**

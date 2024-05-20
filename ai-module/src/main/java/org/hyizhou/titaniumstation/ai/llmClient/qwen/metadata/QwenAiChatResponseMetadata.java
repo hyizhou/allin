@@ -1,4 +1,4 @@
-package org.hyizhou.titaniumstation.ai.qwen.metadata;
+package org.hyizhou.titaniumstation.ai.llmClient.qwen.metadata;
 
 import org.springframework.ai.chat.metadata.ChatResponseMetadata;
 import org.springframework.ai.chat.metadata.EmptyUsage;

@@ -1,6 +1,6 @@
 package ai.qwen;
 
-import org.hyizhou.titaniumstation.ai.qwen.QwenAiApi;
+import org.hyizhou.titaniumstation.ai.llmClient.qwen.QwenAiApi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.model.ModelOptionsUtils;

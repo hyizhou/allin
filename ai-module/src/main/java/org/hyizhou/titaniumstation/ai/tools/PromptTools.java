@@ -3,7 +3,7 @@ package org.hyizhou.titaniumstation.ai.tools;
 import org.hyizhou.titaniumstation.ai.entity.DialogEntity;
 import org.hyizhou.titaniumstation.ai.entity.MessageEntity;
 import org.hyizhou.titaniumstation.ai.exception.NotFoundRoleException;
-import org.hyizhou.titaniumstation.ai.qwen.QwenChatOptions;
+import org.hyizhou.titaniumstation.ai.llmClient.qwen.QwenChatOptions;
 import org.hyizhou.titaniumstation.common.ai.request.ContentReq;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;

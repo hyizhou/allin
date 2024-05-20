@@ -1,7 +1,7 @@
 package org.hyizhou.titaniumstation.ai.processor.message;
 
 import org.hyizhou.titaniumstation.ai.pojo.MessageContext;
-import org.hyizhou.titaniumstation.ai.qwen.QwenChatClient;
+import org.hyizhou.titaniumstation.ai.llmClient.qwen.QwenChatClient;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.openai.OpenAiChatClient;

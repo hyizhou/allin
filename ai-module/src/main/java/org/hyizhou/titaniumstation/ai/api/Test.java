@@ -1,8 +1,8 @@
 package org.hyizhou.titaniumstation.ai.api;
 
-import org.hyizhou.titaniumstation.ai.qwen.QwenAiApi;
-import org.hyizhou.titaniumstation.ai.qwen.QwenChatClient;
-import org.hyizhou.titaniumstation.ai.qwen.QwenChatOptions;
+import org.hyizhou.titaniumstation.ai.llmClient.qwen.QwenAiApi;
+import org.hyizhou.titaniumstation.ai.llmClient.qwen.QwenChatClient;
+import org.hyizhou.titaniumstation.ai.llmClient.qwen.QwenChatOptions;
 import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.beans.factory.annotation.Autowired;

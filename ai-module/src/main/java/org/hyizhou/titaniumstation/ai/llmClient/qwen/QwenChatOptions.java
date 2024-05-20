@@ -1,4 +1,4 @@
-package org.hyizhou.titaniumstation.ai.qwen;
+package org.hyizhou.titaniumstation.ai.llmClient.qwen;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

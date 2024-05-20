@@ -1,8 +1,8 @@
-package org.hyizhou.titaniumstation.ai.qwen;
+package org.hyizhou.titaniumstation.ai.llmClient.qwen;
 
 import org.hyizhou.titaniumstation.ai.function.AbstractFunctionCallSupportPro;
-import org.hyizhou.titaniumstation.ai.qwen.metadata.QwenAiChatResponseMetadata;
-import org.hyizhou.titaniumstation.ai.qwen.metadata.QwenAiUsage;
+import org.hyizhou.titaniumstation.ai.llmClient.qwen.metadata.QwenAiChatResponseMetadata;
+import org.hyizhou.titaniumstation.ai.llmClient.qwen.metadata.QwenAiUsage;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.Generation;

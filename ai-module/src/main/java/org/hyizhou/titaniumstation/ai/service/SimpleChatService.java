@@ -1,7 +1,7 @@
 package org.hyizhou.titaniumstation.ai.service;
 
 
-import org.hyizhou.titaniumstation.ai.qwen.QwenChatClient;
+import org.hyizhou.titaniumstation.ai.llmClient.qwen.QwenChatClient;
 import org.hyizhou.titaniumstation.ai.tools.PromptTools;
 import org.hyizhou.titaniumstation.common.ai.request.MessageRequest;
 import org.jetbrains.annotations.NotNull;
