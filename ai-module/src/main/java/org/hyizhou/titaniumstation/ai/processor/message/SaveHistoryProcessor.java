@@ -8,12 +8,9 @@ import org.hyizhou.titaniumstation.common.ai.response.ContentResp;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
 /**
  * 保存对话到历史记录中 <br>
- * 对数据库保存操作应皆于此类，以避免事务问题
+ * 对数据库保存操作应尽可能集中于此类，以避免事务问题
  * @date 2024/5/17
  */
 @Component
@@ -78,17 +75,7 @@ public class SaveHistoryProcessor implements MessageProcessor {
      */
     private void saveSummary(MessageContext context){
         if (context.getSummaryEntity() != null){
-            // 总结的时间戳将早于最后一条消息的时间戳，以便能在后续对话中正确获取
-            Duration duration = Duration.ofMillis(100);
             MessageEntity summaryEntity = context.getSummaryEntity();
-            LocalDateTime theTime;
-            // 这里判断消息列表是否只有总结一元素，若是如此则表示所有对话都被总结，总结需要放在最新的消息位置
-            if (context.getHistoryMessages().size() > 1){
-                theTime = context.getHistoryMessages().get(1).getTimestamp().minus(duration);
-            }else {
-                theTime = context.getReqTime().minus(duration);
-            }
-            summaryEntity.setTimestamp(theTime);
             summaryEntity.setDialog(context.getDialog());
             summaryEntity.setIsSummary(true);
             messageDao.save(summaryEntity);

@@ -21,6 +21,7 @@ public class MessageSizeStrategy implements HistoryStrategyBehavior {
             log.debug("无需使用MessageSizeStrategy");
             return context;
         }
+        size = size - context.getSystemMessageSize();
         List<MessageEntity> messagesCopy;
         if (context.getModifiedMessages() == null){
             messagesCopy = new ArrayList<>(context.getOriginalMessages());
@@ -30,8 +31,13 @@ public class MessageSizeStrategy implements HistoryStrategyBehavior {
 
         if (messagesCopy.size() > size) {
             List<MessageEntity> subList = messagesCopy.subList(size-1, messagesCopy.size());
+            if (!subList.isEmpty() && subList.get(0).getRole().equals("assistant")){
+                log.debug("-------删除首位assistant消息------------");
+                subList.remove(0);
+            }
             context.setModifiedMessages(subList);
         }
+
         return context;
     }
 }

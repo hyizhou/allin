@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * 异常处理
+ * Spring MVC异常处理
  * @date 2024/5/17
  */
 @RestControllerAdvice
@@ -34,12 +34,4 @@ public class MvcExceptionConfiguration {
         return ex.getLocalizedMessage();
     }
 
-    /**
-     * 处理通用的RuntimeException
-     */
-//    @ExceptionHandler(RuntimeException.class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public String handleRuntimeException(RuntimeException ex){
-//        return ex.getLocalizedMessage();
-//    }
 }

@@ -7,18 +7,20 @@ import org.hyizhou.titaniumstation.ai.entity.MessageEntity;
 import org.hyizhou.titaniumstation.ai.exception.AiSystemException;
 import org.hyizhou.titaniumstation.ai.pojo.HistoryContext;
 import org.hyizhou.titaniumstation.ai.service.SimpleChatService;
+import org.hyizhou.titaniumstation.ai.tools.TokenTools;
 import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.messages.MessageType;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 总结对话的策略
- * TODO 存在的问题：1. 总结提示词不完美，3. 每次请求都将重新拿之前所有消息总结对话，导致token浪费
  * @date 2024/5/18
  */
 @Log4j2
@@ -50,6 +52,10 @@ public class SummaryStrategy implements HistoryStrategyBehavior{
         if (!needSummary(pendingMessages, modifiedMessages)){
             return context;
         }
+        // 计算总结设定的时间
+        Duration duration = Duration.ofMillis(100);
+        LocalDateTime summaryTime = pendingMessages.get(pendingMessages.size()-1).getTimestamp().plus(duration);
+
         String pendingText = convertToString(pendingMessages);
         String summaryText = summary(pendingText);
         MessageEntity summaryMessage = new MessageEntity(
@@ -57,7 +63,7 @@ public class SummaryStrategy implements HistoryStrategyBehavior{
                 null,
                 null,
                 summaryText,
-                null,
+                summaryTime,
                 MessageType.USER.getValue(),
                 "text"
         );
@@ -77,14 +83,17 @@ public class SummaryStrategy implements HistoryStrategyBehavior{
     }
 
     private String summary(String text) {
-        String template = "你是对话重点提炼器，下面是一段用户与AI的对话，请提炼其中重点：\n```\n{text}\n```\n回复格式：前面对话总结：xxx";
+        int tokenSize = TokenTools.simpleCount(text);
+        final int MAX_TOKEN_SIZE = 3000;
+        if (tokenSize > MAX_TOKEN_SIZE){
+            // token 长度限制，避免太长历史撑爆钱包
+            text = TokenTools.subString(text, tokenSize - MAX_TOKEN_SIZE, tokenSize);
+        }
         Map<String, Object> map = Map.of("text", text);
-        PromptTemplate promptTemplate = new PromptTemplate(template);
+        PromptTemplate promptTemplate = Constants.SUMMARY_PROMPT_TEMPLATE;
         UserMessage message = (UserMessage) promptTemplate.createMessage(map);
-        // TODO 此处也要添加token限制
         if (log.isDebugEnabled()) {
             log.debug("待总结的对话\n{}", message.getContent());
-
         }
         ChatResponse chatResponse = simpleChatService.chat(
                 new Prompt(message, Constants.SUMMARY_OPTIONS),

@@ -29,7 +29,16 @@ public class HistoryContext {
      */
     private MessageEntity summaryEntity;
     /*
-    处理的策略，暂时无用
+    token 数
+     */
+    private Integer systemTokenSize = 0;
+    /*
+    消息条数
+     */
+    private Integer systemMessageSize = 0;
+
+    /*
+    处理的策略
      */
     private HistoryStrategyEntity strategy;
 }

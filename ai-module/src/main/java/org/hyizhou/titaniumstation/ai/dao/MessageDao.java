@@ -27,13 +27,21 @@ public interface MessageDao extends JpaRepository<MessageEntity, String> {
     @Query("select m from MessageEntity m where m.dialog = :dialog order by m.timestamp desc limit 1")
     Optional<MessageEntity> findLatestByDialog(DialogEntity dialog);
 
+
+    /**
+     * 查询“总结消息”之后的元素和“system”角色元素，按照时间排序
+     * @param dialog DialogEntity实体类
+     * @return List<MessageEntity>
+     */
     @Query("""
         select m
         from MessageEntity m
-        where m.timestamp >= (
-            select coalesce(max(timestamp), timestamp('2000-01-01 00:00:00'))
-            from MessageEntity
-            where dialog = :dialog and isSummary = true
+        where (
+            m.timestamp >= (
+                select coalesce(max(timestamp), timestamp('2000-01-01 00:00:00'))
+                from MessageEntity
+                where dialog = :dialog and isSummary = true
+            ) or m.role = 'system'
         ) and m.dialog = :dialog
         order by m.timestamp asc
         LIMIT 100

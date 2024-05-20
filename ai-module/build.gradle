@@ -22,6 +22,7 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java:8.0.33'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'  // 主要用于产生配置类产生配置提示
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    implementation 'com.knuddels:jtokkit:1.0.0'  // 本地计算Token数
 }
 
 test {

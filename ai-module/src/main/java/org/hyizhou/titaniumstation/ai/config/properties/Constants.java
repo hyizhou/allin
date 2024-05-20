@@ -4,6 +4,7 @@ import org.hyizhou.titaniumstation.ai.entity.HistoryStrategyEntity;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.openai.OpenAiChatOptions;
 
 import java.util.Map;
@@ -48,4 +49,19 @@ public class Constants {
                 HistoryStrategyEntity.SummaryRule.DIALOG_SUMMARY
         );
     }
+
+    /*
+    总结历史对话提示词模板
+     */
+    public static final PromptTemplate SUMMARY_PROMPT_TEMPLATE = new PromptTemplate("""
+            You are a helpful assistant.
+            You are given a list of messages from a chat conversation.
+            Your task is to summarize the conversation in a concise manner.
+            You should only respond with the summary.
+            
+            Here are the messages:
+            {text}
+            
+            Summary:
+            """);
 }

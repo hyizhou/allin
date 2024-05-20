@@ -23,7 +23,7 @@ public class TokenSizeStrategy implements HistoryStrategyBehavior {
             log.debug("无需调用 TokenSizeStrategy");
             return context;
         }
-        long totalToken = 0L;
+        long totalToken = context.getSystemTokenSize();
         List<MessageEntity> result = new ArrayList<>();
         List<MessageEntity> messagesCopy;
         if (context.getModifiedMessages() == null){
