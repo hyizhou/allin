@@ -1,5 +1,6 @@
 package org.hyizhou.titaniumstation.ai.dao;
 
+import org.hyizhou.titaniumstation.ai.entity.DialogEntity;
 import org.hyizhou.titaniumstation.ai.entity.UserAiConfigEntity;
 import org.hyizhou.titaniumstation.common.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,6 @@ import java.util.Optional;
 public interface UserAiConfigDao extends JpaRepository<UserAiConfigEntity, Integer> {
 
     Optional<UserAiConfigEntity> findByUser(UserEntity user);
+
+    boolean existsByDialog(DialogEntity dialog);
 }

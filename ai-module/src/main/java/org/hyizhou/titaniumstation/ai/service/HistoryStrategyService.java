@@ -39,7 +39,6 @@ public class HistoryStrategyService {
 
     /**
      * 应用策略，返回处理后的历史消息
-     *  TODO 1. system 角色消息过滤
      * @param dialog 会话实体类，通过其信息找到对应的策略和历史消息
      * @return 专用于策略处理的封装类，处理结果从中获取
      */

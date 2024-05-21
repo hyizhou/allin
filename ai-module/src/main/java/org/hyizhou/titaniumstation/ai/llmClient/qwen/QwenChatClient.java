@@ -171,9 +171,7 @@ public class QwenChatClient
 
 
             // parameters 中 result_format 值不同响应中消息位置会不同
-            // TODO 经过测试 resultFormat 为 Text 时函数调用，大模型也能意识到要进行函数调用，但大模型的对函数的调用是作为text文本输出的，并不会被解析成函数调用专门格式
-            // TODO 因此我想，可以在 createRequest 方法中，检测到存在函数调用时，若 resultFormat 无值，则自动将其设置为 message
-            // TODO 反正用到此方法的也只是call和stream两个上层方法，得到的是包装后的结果
+            // result_format（返回格式）设置为 Text 时，大模型也能意识到要进行函数调用，但直接text中输出大模型原始文本，不会被解析成函数调用专门格式
             if (request.parameters() == null ||
                     request.parameters().resultFormat() == QwenAiApi.ResultFormat.TEXT ||
                     request.parameters().resultFormat() == null) {

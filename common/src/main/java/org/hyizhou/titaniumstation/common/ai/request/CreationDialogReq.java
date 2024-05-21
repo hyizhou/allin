@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public record CreationDialogReq(
         /*
-        服务商名称
+        服务商名称，等同于 MessageRequest.client
          */
         @JsonProperty("serviceProvider") String serviceProvider,
         /*

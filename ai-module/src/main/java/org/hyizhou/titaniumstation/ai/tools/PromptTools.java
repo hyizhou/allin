@@ -26,14 +26,14 @@ public class PromptTools {
         List<Message> updateMessage = messages.stream().map(entity -> {
             return PromptTools.generateMessage(entity.getContent(), entity.getRole());
         }).collect(Collectors.toList());
-        updateMessage.add(generateMessage(req.content(), req.role()));
+        updateMessage.add(generateMessage(req.getContent(), req.getRole()));
         ChatOptions options = generateOptions(dialog.getModel(), dialog.getServiceProvider());
         return new Prompt(updateMessage, options);
     }
 
     public static Prompt generatePrompt(ContentReq req, DialogEntity dialog){
         ChatOptions options = generateOptions(dialog.getModel(), dialog.getServiceProvider());
-        return generatePrompt(req.content(), req.role(), options);
+        return generatePrompt(req.getContent(), req.getRole(), options);
     }
 
     public static Prompt generatePrompt(String message, String role, ChatOptions options) {

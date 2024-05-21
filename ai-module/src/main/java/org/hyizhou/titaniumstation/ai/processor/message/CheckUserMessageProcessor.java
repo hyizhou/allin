@@ -30,8 +30,8 @@ public class CheckUserMessageProcessor implements MessageProcessor {
         UserEntity user = userService.getCurrentUser();
         ContentReq req = context.getContentReq();
         // 1. 验证会话id是否存在与此用户的
-        if (!dialogDao.existsByDialogIdAndUserId(req.dialogId(), user.getId())){
-            throw new NotFoundDialogException(req.dialogId());
+        if (!dialogDao.existsByDialogIdAndUserId(req.getDialogId(), user.getId())){
+            throw new NotFoundDialogException(req.getDialogId());
         }
         context.setReqTime(LocalDateTime.now());
         return context;

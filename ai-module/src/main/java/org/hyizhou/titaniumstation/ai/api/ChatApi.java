@@ -14,7 +14,7 @@ import reactor.core.publisher.Flux;
  * @date 2024/5/15
  */
 @RestController
-@RequestMapping("/api/ai/chat")
+@RequestMapping("/api/ai")
 public class ChatApi {
 
     private final SimpleChatService simpleChatService;
@@ -25,13 +25,14 @@ public class ChatApi {
         this.chatService = chatService;
     }
 
-    @PostMapping("/steam")
-    public Flux<ChatResponse> doSteamChat(@RequestBody MessageRequest request){
-        return simpleChatService.steam(request);
+    @PostMapping("/dialogs/{dialogs_id}/steam")
+    public Flux<ChatResponse> doSteamChat(@PathVariable("dialogs_id")String dialogId, @RequestBody ContentReq req){
+        return null;
     }
 
-    @PostMapping("/chat")
-    public ContentResp doChat(@RequestBody ContentReq req){
+    @PostMapping("/dialogs/{dialogs_id}/chat")
+    public ContentResp doChat(@PathVariable("dialogs_id")String dialogId, @RequestBody ContentReq req){
+        req.setDialogId(dialogId);
         return chatService.chat(req);
     }
 

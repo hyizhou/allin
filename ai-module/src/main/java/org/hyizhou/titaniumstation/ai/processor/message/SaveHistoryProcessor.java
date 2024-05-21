@@ -36,10 +36,10 @@ public class SaveHistoryProcessor implements MessageProcessor {
                 null,
                 context.getDialog(),
                 null,
-                req.content(),
+                req.getContent(),
                 context.getReqTime(),
-                req.role(),
-                req.type()
+                req.getRole(),
+                req.getType()
         );
         MessageEntity respMsgEntity = new MessageEntity(
                 null,

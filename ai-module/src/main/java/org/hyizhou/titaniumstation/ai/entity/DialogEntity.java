@@ -36,7 +36,10 @@ public class DialogEntity {
     @Column(columnDefinition = "TEXT")
     private String dialogsSummary; // 假设使用TEXT类型存储对话总结
 
-    @OneToOne(fetch = FetchType.LAZY)
+    /*
+    一对一的关系，级联满上
+     */
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinColumn(name = "history_strategy_id", nullable = true)
     private HistoryStrategyEntity historyStrategy;
 }

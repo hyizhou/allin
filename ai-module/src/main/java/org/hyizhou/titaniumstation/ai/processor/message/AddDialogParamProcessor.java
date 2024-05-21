@@ -21,7 +21,7 @@ public class AddDialogParamProcessor implements MessageProcessor {
 
     @Override
     public MessageContext process(MessageContext context) {
-        Optional<DialogEntity> dialogOptional = dialogDao.findById(context.getContentReq().dialogId());
+        Optional<DialogEntity> dialogOptional = dialogDao.findById(context.getContentReq().getDialogId());
         if (dialogOptional.isPresent()){
             DialogEntity dialog = dialogOptional.get();
             context.setDialog(dialog);

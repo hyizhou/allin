@@ -19,6 +19,8 @@ public interface MessageDao extends JpaRepository<MessageEntity, String> {
 
     List<MessageEntity> findAllByDialog(DialogEntity dialog, Sort sort);
 
+    int deleteByDialog(DialogEntity dialog);
+
     /**
      * 匹配 dialog 消息，并使用 timestamp 倒序排序， 取出第一个
      * @param dialog DialogEntity实体类
