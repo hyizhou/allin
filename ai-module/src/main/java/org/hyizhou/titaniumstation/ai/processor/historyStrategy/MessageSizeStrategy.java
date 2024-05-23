@@ -17,7 +17,7 @@ public class MessageSizeStrategy implements HistoryStrategyBehavior {
     public HistoryContext applyStrategy(HistoryContext context) {
         log.debug("调用 MessageSizeStrategy");
         Integer size = context.getStrategy().getMessageSize();
-        if (size == null){
+        if (size == null || size < 0){
             log.debug("无需使用MessageSizeStrategy");
             return context;
         }

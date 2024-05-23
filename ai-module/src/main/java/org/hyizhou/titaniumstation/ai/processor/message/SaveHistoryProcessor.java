@@ -30,44 +30,10 @@ public class SaveHistoryProcessor implements MessageProcessor {
     @Override
     @Transactional
     public MessageContext process(MessageContext context) {
-        ContentReq req = context.getContentReq();
-        ContentResp resp = context.getContentResp();
-        MessageEntity reqMsgEntity = new MessageEntity(
-                null,
-                context.getDialog(),
-                null,
-                req.getContent(),
-                context.getReqTime(),
-                req.getRole(),
-                req.getType()
-        );
-        MessageEntity respMsgEntity = new MessageEntity(
-                null,
-                context.getDialog(),
-                null,
-                resp.content(),
-                context.getRespTime(),
-                resp.role(),
-                resp.type()
-        );
-        reqMsgEntity = messageDao.save(reqMsgEntity);
-        respMsgEntity = messageDao.save(respMsgEntity);
+        saveReq(context);
+        newSaveResp(context);
         saveSummary(context);
-        // 最后将响应消息的id更新到resp上
-        context.setContentResp(updateContentResp(respMsgEntity.getMessageId(), resp));
         return context;
-    }
-
-    private ContentResp updateContentResp(String messageId, ContentResp resp){
-        return new ContentResp(
-                resp.content(),
-                resp.type(),
-                resp.role(),
-                messageId,
-                resp.finishReason(),
-                resp.promptTokens(),
-                resp.generationTokens()
-        );
     }
 
     /**
@@ -81,4 +47,54 @@ public class SaveHistoryProcessor implements MessageProcessor {
             messageDao.save(summaryEntity);
         }
     }
+
+    /**
+     * 保存请求消息到数据库
+     */
+    private void saveReq(MessageContext context) {
+        MessageEntity reqEntity = context.getReqMessageEntity();
+        // 判断是否存储过了
+        if (reqEntity != null && reqEntity.getMessageId() != null){
+            return;
+        }
+        ContentReq req = context.getContentReq();
+        MessageEntity reqMsgEntity = new MessageEntity(
+                null,
+                context.getDialog(),
+                null,
+                req.getContent(),
+                context.getReqTime(),
+                req.getRole(),
+                req.getType()
+        );
+        reqMsgEntity = messageDao.save(reqMsgEntity);
+        context.setReqMessageEntity(reqMsgEntity);
+    }
+
+    private void newSaveResp(MessageContext context) {
+        MessageEntity respEntity = context.getRespMessageEntity();
+        if (respEntity == null ) {
+            saveResp(context);
+            return;
+        }
+        messageDao.save(respEntity);
+    }
+
+    /**
+     * 保存响应的消息到数据库
+     */
+    private void saveResp(MessageContext context) {
+        ContentResp resp = context.getContentResp();
+        MessageEntity respMsgEntity = new MessageEntity(
+                resp.id(),
+                context.getDialog(),
+                null,
+                resp.content(),
+                context.getRespTime(),
+                resp.role(),
+                resp.type()
+        );
+        messageDao.save(respMsgEntity);
+    }
+
 }

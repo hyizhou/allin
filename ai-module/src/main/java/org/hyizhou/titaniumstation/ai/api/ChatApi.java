@@ -26,8 +26,9 @@ public class ChatApi {
     }
 
     @PostMapping("/dialogs/{dialogs_id}/steam")
-    public Flux<ChatResponse> doSteamChat(@PathVariable("dialogs_id")String dialogId, @RequestBody ContentReq req){
-        return null;
+    public Flux<ContentResp> doSteamChat(@PathVariable("dialogs_id")String dialogId, @RequestBody ContentReq req){
+        req.setDialogId(dialogId);
+        return chatService.streamChat(req);
     }
 
     @PostMapping("/dialogs/{dialogs_id}/chat")

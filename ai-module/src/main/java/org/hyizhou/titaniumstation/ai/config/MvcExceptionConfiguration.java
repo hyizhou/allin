@@ -1,5 +1,6 @@
 package org.hyizhou.titaniumstation.ai.config;
 
+import org.hyizhou.titaniumstation.ai.exception.BusyDialogException;
 import org.hyizhou.titaniumstation.ai.exception.NotFoundDialogException;
 import org.hyizhou.titaniumstation.ai.exception.NotFoundRoleException;
 import org.hyizhou.titaniumstation.ai.exception.UnauthorizedOperationException;
@@ -41,6 +42,15 @@ public class MvcExceptionConfiguration {
     @ExceptionHandler(UnauthorizedOperationException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public String handleUnauthorizedOperationException(UnauthorizedOperationException ex){
+        return ex.getLocalizedMessage();
+    }
+
+    /**
+     * BusyDialogException
+     */
+    @ExceptionHandler(BusyDialogException.class)
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
+    public String handleBusyDialogException(BusyDialogException ex){
         return ex.getLocalizedMessage();
     }
 

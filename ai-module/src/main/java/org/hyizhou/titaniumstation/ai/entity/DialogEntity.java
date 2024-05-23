@@ -42,4 +42,7 @@ public class DialogEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinColumn(name = "history_strategy_id", nullable = true)
     private HistoryStrategyEntity historyStrategy;
+
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean isBusy;
 }

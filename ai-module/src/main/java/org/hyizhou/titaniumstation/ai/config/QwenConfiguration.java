@@ -44,6 +44,7 @@ public class QwenConfiguration {
         QwenChatOptions options = QwenChatOptions.builder()
                 .withMode(QwenAiApi.ChatMode.QWEN_TURBO.value)  // 为开源版本
                 .withResultFormat(QwenAiApi.ResultFormat.MESSAGE)
+                .withIncrementalOutput(true)
                 .build();
         if (!CollectionUtils.isEmpty(toolFunctionCallbacks)){
             options.getFunctionCallbacks().addAll(toolFunctionCallbacks);

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * 聊天消息表
@@ -18,7 +19,8 @@ import java.time.LocalDateTime;
 @Table(name = "messages")
 public class MessageEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+//    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(unique = true)
     private String messageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,4 +41,11 @@ public class MessageEntity {
 
     @Column(nullable = false)
     private String type;
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.messageId == null)  {
+            this.messageId = UUID.randomUUID().toString();
+        }
+    }
 }

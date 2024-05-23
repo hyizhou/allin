@@ -6,6 +6,6 @@ package org.hyizhou.titaniumstation.ai.exception;
  */
 public class NotFoundDialogException extends RuntimeException{
     public NotFoundDialogException(String dialogId) {
-        super("此会话ID不存在或无权操作 " + dialogId);
+        super("此会话ID不存在或无权操作: [" + dialogId + "]");
     }
 }

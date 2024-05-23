@@ -230,7 +230,10 @@ public class QwenChatClient
                 completionFlux = this.callSteamWithFunctionSupport(request);
             }
             return completionFlux.map( chatCompletion -> {
-                return new ChatResponse(generation1(chatCompletion));
+                return new ChatResponse(
+                        generation1(chatCompletion),
+                        new QwenAiChatResponseMetadata(chatCompletion.requestId(), new QwenAiUsage(chatCompletion.usage()))
+                );
             });
         });
     }
@@ -321,7 +324,8 @@ public class QwenChatClient
         return this.qwenAiApi.chatCompletionEntity(request);
     }
 
-    @Override
+    // 此方法在 Spring AI 1.0.0 后添加
+//    @Override
     protected Flux<ResponseEntity<QwenAiApi.ChatCompletion>> doChatCompletionStream(QwenAiApi.ChatCompletionRequest request) {
         return this.doStreamChatCompletion(request)
                 .map(e -> ResponseEntity.of(Optional.of(e)));

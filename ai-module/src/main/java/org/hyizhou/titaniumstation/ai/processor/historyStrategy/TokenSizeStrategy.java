@@ -19,7 +19,7 @@ public class TokenSizeStrategy implements HistoryStrategyBehavior {
     public HistoryContext applyStrategy(HistoryContext context) {
         Long tokenSize = context.getStrategy().getTokenSize();
         log.debug("调用 TokenSizeStrategy");
-        if (tokenSize == null){
+        if (tokenSize == null || tokenSize < 0){
             log.debug("无需调用 TokenSizeStrategy");
             return context;
         }
