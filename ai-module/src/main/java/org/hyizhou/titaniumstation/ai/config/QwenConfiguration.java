@@ -42,9 +42,8 @@ public class QwenConfiguration {
         // 从环境变量中获取apiKey，后续要部署到服务器，可以增加从配置文件获取
         QwenAiApi api = new QwenAiApi(getApiKey(qwenProperties));
         QwenChatOptions options = QwenChatOptions.builder()
-                .withMode(QwenAiApi.ChatMode.QWEN_TURBO.value)  // 为开源版本
-                .withResultFormat(QwenAiApi.ResultFormat.MESSAGE)
-                .withIncrementalOutput(true)
+                .withMode(QwenAiApi.ChatMode.QWEN_TURBO.value)  // 默认指定为非开源版本，提供函数调用功能
+                .withResultFormat(QwenAiApi.ResultFormat.MESSAGE)  // 响应格式为 message 格式，使之能携带函数调用内容
                 .build();
         if (!CollectionUtils.isEmpty(toolFunctionCallbacks)){
             options.getFunctionCallbacks().addAll(toolFunctionCallbacks);

@@ -17,6 +17,7 @@ import java.util.List;
  * openRouter 平台的底层api，其实和openAi的api基本一致，只是多一些参数值
  * @date 2024/5/18
  */
+@Deprecated
 public class OpenRouterApi extends OpenAiApi {
     private static final String DEFAULT_BASE_URL = "https://openrouter.ai/api";
     private final RestClient restClient;

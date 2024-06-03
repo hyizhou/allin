@@ -83,8 +83,9 @@ public class QwenAiApi {
             logger.debug("聊天请求体：{}\n", ModelOptionsUtils.toJsonString(request));
         }
 
+        // 流式响应才有此配置
         if (request.parameters() != null && Boolean.TRUE.equals(request.parameters.incrementalOutput())){
-            throw new IllegalArgumentException("非流式对话parameters不能为true");
+            throw new IllegalArgumentException("非流式对话parameters.incrementalOutput不能为true");
         }
         RestClient.RequestBodyUriSpec post = this.restClient.post();
         if (plugins != null){

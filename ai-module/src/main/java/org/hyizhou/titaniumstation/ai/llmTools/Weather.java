@@ -16,7 +16,7 @@ import java.util.function.Function;
  * AbstractFunctionCallSupport类中 functionCallbackContext 属性，也就是 FunctionCallbackContext 类，专门用来在Spring容器中
  * 获取到“函数回调”。
  * <p>
- * 此类并未自动创建，若未null的话，则“函数回调”只能从 xxxChatClient 的 xxxChatOptions 中得到，
+ * 此类并未自动创建，若为null的话，则“函数回调”只能从 xxxChatClient 的 xxxChatOptions 中得到，
  * @author hyizhou
  * @date 2024/4/30
  */

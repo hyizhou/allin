@@ -16,5 +16,5 @@ public class QwenChatProperties {
     /*
      是否启用
      */
-    private Boolean enable;
+    private Boolean enabled;
 }

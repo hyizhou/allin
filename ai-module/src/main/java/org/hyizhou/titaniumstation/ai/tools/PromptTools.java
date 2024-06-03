@@ -65,4 +65,17 @@ public class PromptTools {
         }
         return chatOptions;
     }
+
+    public static ChatOptions generateOptionsForStream(String model, String client){
+        ChatOptions chatOptions;
+        if ("qwen".equals(client)) {
+            chatOptions = QwenChatOptions.builder().withMode(model)
+                    // 本系统统一不使用增量输出，由于qwen默认增量模式，此处需要显式设置，非流式调用添加此参数会报错
+                    .withIncrementalOutput(true)
+                    .build();
+        }else {
+            chatOptions = OpenAiChatOptions.builder().withModel(model).build();
+        }
+        return chatOptions;
+    }
 }
