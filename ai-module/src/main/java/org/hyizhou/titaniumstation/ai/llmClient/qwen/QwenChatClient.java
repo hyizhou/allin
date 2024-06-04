@@ -90,7 +90,7 @@ public class QwenChatClient
             parameters = ModelOptionsUtils.merge(this.defaultOptions, null, QwenAiApi.ChatCompletionParameters.class);
             model = this.defaultOptions.getModel();
             // 获取函数工具名，第二个参数为true（默认）表示将所获取到的回调函数名称全都返回（此处后续代码会根据这些名称将函数传递给模型），若为false，则只返回显式声明(option.functions的值)传递给模型的函数
-            Set<String> promptEnableFunctions = this.handleFunctionCallbackConfigurations(this.defaultOptions, IS_RUNTIME_CALL);
+            Set<String> promptEnableFunctions = this.handleFunctionCallbackConfigurations(this.defaultOptions, false);
             functionsForThisRequest.addAll(promptEnableFunctions);
             logger.debug("defaultOptions中函数名：{}\n", promptEnableFunctions);
         }

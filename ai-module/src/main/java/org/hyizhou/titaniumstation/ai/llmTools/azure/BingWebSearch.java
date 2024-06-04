@@ -3,6 +3,8 @@ package org.hyizhou.titaniumstation.ai.llmTools.azure;
 import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import lombok.extern.log4j.Log4j2;
+import org.hyizhou.titaniumstation.ai.llmTools.TitaniumPython;
 import org.hyizhou.titaniumstation.ai.llmTools.azure.entity.SearchResponse;
 import org.springframework.ai.model.ModelOptionsUtils;
 import org.springframework.http.HttpHeaders;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -17,9 +20,22 @@ import java.util.function.Function;
  * TODO 直接将搜索结果返回，所包含的有用信息较少，后续应进一步读取链接中内容再做返回
  * @date 2024/5/24
  */
+@Log4j2
 public class BingWebSearch implements Function<BingWebSearch.Request, BingWebSearch.Response> {
     // Enter a valid subscription key.
     private final String subscriptionKey;
+    /*
+    搜索返回结果条数
+     */
+    private final int QUERY_COUNT = 5;
+    /*
+    打开链接，总结内容
+     */
+    private final boolean openLink;
+    /*
+    链接总结api
+     */
+    private final TitaniumPython titaniumPython;
 
     @JsonClassDescription("通过搜索引擎进行在线搜索")
     public record Request(
@@ -27,14 +43,21 @@ public class BingWebSearch implements Function<BingWebSearch.Request, BingWebSea
     ) {}
     public record Response(String result) {}
 
-    public BingWebSearch(String key){
+    public BingWebSearch(String key, Boolean openLink, TitaniumPython titaniumPython){
         this.subscriptionKey = key;
+        this.openLink = openLink;
+        this.titaniumPython = titaniumPython;
     }
 
     @Override
     public Response apply(Request request) {
-        String result = ModelOptionsUtils.toJsonString(searchWeb(request.q).getWebPages().getValue());
-        return new Response(result);
+        log.debug("调用bing搜索，关键词：{}", request.q);
+        SearchResponse response = searchWeb(request.q);
+        if (openLink){
+            return new Response(getUrlSummary(response));
+        }else {
+            return new Response(ModelOptionsUtils.toJsonString(response.getWebPages().getValue()));
+        }
     }
 
 
@@ -48,12 +71,11 @@ public class BingWebSearch implements Function<BingWebSearch.Request, BingWebSea
     WebClient webClient = WebClient.builder().baseUrl(host + path).build();
 
     private SearchResponse searchWeb(String searchQuery) {
-        // TODO 搜索参数还需进一步优化
         return webClient.get()
                 .uri(uriBuilder -> {
                     return uriBuilder
                             .queryParam("q", searchQuery)
-                            .queryParam("count", 5)
+                            .queryParam("count", QUERY_COUNT)
                             .build();
                 })
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -64,5 +86,18 @@ public class BingWebSearch implements Function<BingWebSearch.Request, BingWebSea
                 )
                 .bodyToMono(SearchResponse.class)
                 .block();
+    }
+
+    /**
+     * 获取链接总结
+     * @param response 搜索结果
+     */
+    private String getUrlSummary(SearchResponse response){
+        List<SearchResponse.WebPage> webPageList = response.getWebPages().getValue();
+        List<String> urls = webPageList.stream().map(SearchResponse.WebPage::getUrl).toList();
+        List<TitaniumPython.Data> data = titaniumPython.urlSummary(new TitaniumPython.Urls(urls));
+        String dataStr = ModelOptionsUtils.toJsonString(data);  // 这里得增加规则，不能传入太长的内容
+        log.debug(dataStr);
+        return dataStr;
     }
 }

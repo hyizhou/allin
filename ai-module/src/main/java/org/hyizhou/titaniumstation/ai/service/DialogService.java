@@ -117,6 +117,9 @@ public class DialogService {
         if (model.serviceProvider() != null){
             dialog.setServiceProvider(model.serviceProvider());
         }
+        if (model.functions() != null) {
+            dialog.setFunctions(model.functions());
+        }
         if (model.removeHistoryStrategy() != null && model.removeHistoryStrategy()){
             safeRemoveHistoryStrategy(dialog);
         }else {

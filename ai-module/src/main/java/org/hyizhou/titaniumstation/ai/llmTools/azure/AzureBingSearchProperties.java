@@ -15,4 +15,6 @@ public class AzureBingSearchProperties {
     private Boolean enabled;
     // key
     private String key;
+    // 是否打开搜索到的链接以获取网页内容
+    private Boolean openLink = false;
 }

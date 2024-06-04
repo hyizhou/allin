@@ -31,11 +31,6 @@ public class PromptTools {
         return new Prompt(updateMessage, options);
     }
 
-    public static Prompt generatePrompt(ContentReq req, DialogEntity dialog){
-        ChatOptions options = generateOptions(dialog.getModel(), dialog.getServiceProvider());
-        return generatePrompt(req.getContent(), req.getRole(), options);
-    }
-
     public static Prompt generatePrompt(String message, String role, ChatOptions options) {
         Prompt prompt = generatePrompt(message, role);
         return new Prompt(prompt.getInstructions(), options);
