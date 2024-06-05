@@ -73,9 +73,7 @@ public class GenerationPromptProcessor implements MessageProcessor {
      * @return Prompt对象
      */
     private Prompt generatePrompt(ContentReq req, List<MessageEntity> historyMsg, ChatOptions options) {
-        List<Message> messages = historyMsg.stream().map(entity -> {
-            return PromptTools.generateMessage(entity.getContent(), entity.getRole());
-        }).collect(Collectors.toList());  // 此处不使用 toList 是因为后续需要再进行修改
+        List<Message> messages = historyMsg.stream().map(entity -> PromptTools.generateMessage(entity.getContent(), entity.getRole())).collect(Collectors.toList());  // 此处不使用 toList 是因为后续需要再进行修改
         messages.add(PromptTools.generateMessage(req.getContent(), req.getRole()));
         return new Prompt(messages, options);
     }
