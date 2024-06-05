@@ -3,15 +3,18 @@ package org.hyizhou.titaniumstation.ai.llmTools.azure;
 import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.hyizhou.titaniumstation.ai.llmTools.TitaniumPython;
 import org.hyizhou.titaniumstation.ai.llmTools.azure.entity.SearchResponse;
-import org.springframework.ai.model.ModelOptionsUtils;
+import org.hyizhou.titaniumstation.ai.tools.JsonTools;
+import org.hyizhou.titaniumstation.ai.tools.TokenTools;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -51,12 +54,24 @@ public class BingWebSearch implements Function<BingWebSearch.Request, BingWebSea
 
     @Override
     public Response apply(Request request) {
-        log.debug("调用bing搜索，关键词：{}", request.q);
+        log.debug("调用bing搜索关键词：{}", request.q);
         SearchResponse response = searchWeb(request.q);
         if (openLink){
-            return new Response(getUrlSummary(response));
+            Response resp = new Response(getUrlSummary(response));
+            log.debug("\n{}", resp);
+            return resp;
         }else {
-            return new Response(ModelOptionsUtils.toJsonString(response.getWebPages().getValue()));
+            List<SearchResponse.WebPage> webPageList = response.getWebPages().getValue();
+            webPageList = webPageList.stream().peek(webPage -> {
+                // 删除无用信息减少token消耗
+                webPage.setCachedPageUrl(null);
+                webPage.setId(null);
+                webPage.setDisplayUrl(null);
+                webPage.setDateLastCrawled(null);
+            }).toList();
+            Response resp = new Response(JsonTools.toJsonString(webPageList));
+            log.debug("\n{}", resp.result);
+            return resp;
         }
     }
 
@@ -93,11 +108,27 @@ public class BingWebSearch implements Function<BingWebSearch.Request, BingWebSea
      * @param response 搜索结果
      */
     private String getUrlSummary(SearchResponse response){
+        // 显示总结能最多只能占用的token数，后续可改成自由修改的值
+        int limitTotalTokenCount = 4000;
+        // 平均一下每个链接消耗的token数
+        int limitTokenCount = limitTotalTokenCount / QUERY_COUNT;
+        List<Result> results = new ArrayList<>();
         List<SearchResponse.WebPage> webPageList = response.getWebPages().getValue();
         List<String> urls = webPageList.stream().map(SearchResponse.WebPage::getUrl).toList();
         List<TitaniumPython.Data> data = titaniumPython.urlSummary(new TitaniumPython.Urls(urls));
-        String dataStr = ModelOptionsUtils.toJsonString(data);  // 这里得增加规则，不能传入太长的内容
-        log.debug(dataStr);
-        return dataStr;
+        for (TitaniumPython.Data d : data) {
+            Result result = new Result();
+            result.setUrl(d.url());
+            result.setSummary(TokenTools.subString(d.summary(), 0, limitTokenCount));
+            results.add(result);
+        }
+        return JsonTools.toJsonString(results);  // 这里得增加规则，不能传入太长的内容
+    }
+
+
+    @Data
+    static class Result {
+        private String url;
+        private String summary;
     }
 }

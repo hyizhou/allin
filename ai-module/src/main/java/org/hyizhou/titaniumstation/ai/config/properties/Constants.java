@@ -64,4 +64,13 @@ public class Constants {
             
             Summary:
             """);
+
+    /*
+    千问非开源模型系列，当然还有一些快照型号，不过此处就不做记录了
+     */
+    public static final Set<String> OFFICIAL_QWEN_MODELS = Set.of(
+            "qwen-turbo",
+            "qwen-plus",
+            "qwen-max"
+            );
 }

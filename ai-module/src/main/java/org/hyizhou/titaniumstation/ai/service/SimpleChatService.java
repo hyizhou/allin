@@ -38,14 +38,14 @@ public class SimpleChatService {
 
     public ChatResponse chat(MessageRequest messageRequest){
         ChatClient chatClient = getChatClientByClient(messageRequest.client());
-        ChatOptions options = PromptTools.generateOptions(messageRequest.modelName(), messageRequest.client());
+        ChatOptions options = PromptTools.generateOptions(messageRequest.modelName(), messageRequest.client(), messageRequest.functions(), false);
         Prompt prompt = generatePrompt(messageRequest.message(), messageRequest.role(), options);
         return chatClient.call(prompt);
     }
 
     public Flux<ChatResponse> steam(MessageRequest messageRequest){
         StreamingChatClient chatClient = getStreamingChatClientByClient(messageRequest.client());
-        ChatOptions options = PromptTools.generateOptionsForStream(messageRequest.modelName(), messageRequest.client());
+        ChatOptions options = PromptTools.generateOptions(messageRequest.modelName(), messageRequest.client(), messageRequest.functions(), true);
         Prompt prompt = generatePrompt(messageRequest.message(), messageRequest.role(), options);
         return chatClient.stream(prompt);
     }
@@ -83,8 +83,4 @@ public class SimpleChatService {
         return PromptTools.generatePrompt(message, role, options);
     }
 
-
-    private ChatOptions generateOptions(String model, String client){
-        return PromptTools.generateOptions(model, client);
-    }
 }

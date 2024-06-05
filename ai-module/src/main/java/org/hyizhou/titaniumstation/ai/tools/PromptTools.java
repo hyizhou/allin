@@ -1,10 +1,8 @@
 package org.hyizhou.titaniumstation.ai.tools;
 
-import org.hyizhou.titaniumstation.ai.entity.DialogEntity;
-import org.hyizhou.titaniumstation.ai.entity.MessageEntity;
+import org.hyizhou.titaniumstation.ai.config.properties.Constants;
 import org.hyizhou.titaniumstation.ai.exception.NotFoundRoleException;
 import org.hyizhou.titaniumstation.ai.llmClient.qwen.QwenChatOptions;
-import org.hyizhou.titaniumstation.common.ai.request.ContentReq;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
@@ -13,23 +11,14 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.openai.OpenAiChatOptions;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Prompt 工厂
  * @date 2024/5/17
  */
 public class PromptTools {
-
-    public static Prompt generatePrompt(ContentReq req, DialogEntity dialog, List<MessageEntity> messages){
-        List<Message> updateMessage = messages.stream().map(entity -> {
-            return PromptTools.generateMessage(entity.getContent(), entity.getRole());
-        }).collect(Collectors.toList());
-        updateMessage.add(generateMessage(req.getContent(), req.getRole()));
-        ChatOptions options = generateOptions(dialog.getModel(), dialog.getServiceProvider());
-        return new Prompt(updateMessage, options);
-    }
 
     public static Prompt generatePrompt(String message, String role, ChatOptions options) {
         Prompt prompt = generatePrompt(message, role);
@@ -51,25 +40,21 @@ public class PromptTools {
         };
     }
 
-    public static ChatOptions generateOptions(String model, String client){
+    public static ChatOptions generateOptions(String model, String client, List<String> functions, boolean stream){
+        functions = functions == null ? List.of() : functions;
         ChatOptions chatOptions;
         if ("qwen".equals(client)) {
-            chatOptions = QwenChatOptions.builder().withMode(model).build();
+            // qwen 开启 incremental_output 时与 tools 无法同时使用，也就是开启增量输出时无法进行函数工具调用
+            // 但官方给大模型内置了搜索服务可供使用
+            QwenChatOptions qwenChatOptions = QwenChatOptions.builder().withMode(model).withIncrementalOutput(stream).build();
+            if (Constants.OFFICIAL_QWEN_MODELS.contains(model)){
+                qwenChatOptions.setEnableSearch(true);
+            }
+            qwenChatOptions.setFunctions(new HashSet<>(functions));
+            chatOptions = qwenChatOptions;
         }else {
             chatOptions = OpenAiChatOptions.builder().withModel(model).build();
-        }
-        return chatOptions;
-    }
-
-    public static ChatOptions generateOptionsForStream(String model, String client){
-        ChatOptions chatOptions;
-        if ("qwen".equals(client)) {
-            chatOptions = QwenChatOptions.builder().withMode(model)
-                    // 本系统统一不使用增量输出，由于qwen默认增量模式，此处需要显式设置，非流式调用添加此参数会报错
-                    .withIncrementalOutput(true)
-                    .build();
-        }else {
-            chatOptions = OpenAiChatOptions.builder().withModel(model).build();
+            ((OpenAiChatOptions) chatOptions).setFunctions(new HashSet<>(functions));
         }
         return chatOptions;
     }

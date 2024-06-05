@@ -2,6 +2,7 @@ package org.hyizhou.titaniumstation.ai.llmClient.qwen;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.model.function.FunctionCallback;
 import org.springframework.ai.model.function.FunctionCallingOptions;
@@ -16,6 +17,7 @@ import java.util.*;
  * @author hyizhou
  * @date 2024/4/23
  */
+@Data
 public class QwenChatOptions implements ChatOptions, FunctionCallingOptions {
 
     private @JsonProperty("model") String model;

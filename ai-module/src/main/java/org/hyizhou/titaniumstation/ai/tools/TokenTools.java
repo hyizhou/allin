@@ -34,7 +34,7 @@ public class TokenTools{
         Encoding enc = registry.getEncodingForModel(ModelType.GPT_3_5_TURBO);
         IntArrayList encoded = enc.encode(text);
         if (encoded.size() > end){
-            throw new IllegalArgumentException(String.format("end must be less than text token size. Token size=%d, end=%d", encoded.size(), end));
+            end = encoded.size();
         }
         int[] encodedArr = Arrays.copyOfRange(encoded.toArray(), start, end);
         IntArrayList beforeEncoded = new IntArrayList();
