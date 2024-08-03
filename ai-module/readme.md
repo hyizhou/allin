@@ -22,6 +22,7 @@
 - history_strategy_id (外键，可空): 关联到历史策略表的历史策略ID。
 - is_busy：表上一条对话未处理完毕，不接受新的消息
 - functions (json): 大语言模型进行函数调用，开启的函数名称，json格式，可为空。
+- agent_id (外键，可空): 关联到agents表的agents_id。
 
 
 ### 消息表 (messages): 存储每条消息的详细信息。
@@ -50,8 +51,28 @@
 ### prompt_templates (prompt模板): 存储提示词模板的详细信息。
 - template_id (主键, 自增): 模板唯一标识。
 - description：对此模板的描述。
-- category：模板分类。如问候、帮助等
+- labels：标签，可用于分类。如问候、帮助类型等
 - template_text：提示词内容
-- example：对话示例，这里要存储固定结构的文本，不过这里不用管
-- create_time：模板创建时间
-- update_time：模板最后更新时间
+- example：对话示例，这里要存储固定结构的文本
+- create_at：模板创建时间
+- update_at：模板最后更新时间
+
+### agents (智能体配置表)：配置智能体，智能体可以理解为AI助手。
+- agent_id (主键, 自增): 智能体唯一标识。
+- user_id (外键)： 关联到用户表的用户ID。
+- avatar：智能体头像。
+- name：智能体名称。
+- description：智能体介绍
+- prompt_template_id (外键): 关联到prompt_templates表的模板ID，用于发送消息时自动应用模板
+- history_strategy_id (外键)：关联到history_strategy表的ID，用于设定默认的智能体历史消息处理策略
+- playbook：智能体的设定
+- labels：智能体的标签，可用于分类，使用逗号分离字符
+- model：智能体使用的AI模型
+- service_provider：智能体使用的AI模型提供商
+- temperature：智能体使用的AI模型随机性
+- top_p：智能体使用的AI模型采样率
+- functions (json): 大语言模型进行函数调用，开启的函数名称，json格式，可为空。
+- is_deleted：是否删除，0表示未删除，1表示已删除
+- is_public：是否公开，0表示不公开，1表示公开
+- create_at ：创建时间
+- update_at：更新时间

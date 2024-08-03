@@ -1,11 +1,12 @@
 package org.hyizhou.titaniumstation.ai.api;
 
-import org.hyizhou.titaniumstation.ai.service.SimpleChatService;
 import org.hyizhou.titaniumstation.ai.service.ChatService;
+import org.hyizhou.titaniumstation.ai.service.SimpleChatService;
 import org.hyizhou.titaniumstation.common.ai.request.ContentReq;
 import org.hyizhou.titaniumstation.common.ai.request.MessageRequest;
 import org.hyizhou.titaniumstation.common.ai.response.ContentResp;
 import org.springframework.ai.chat.ChatResponse;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
@@ -47,9 +48,10 @@ public class ChatApi {
         return simpleChatService.chat(request);
     }
 
-    @PostMapping("/simpleStreamChat")
+    @PostMapping(value = "/simpleStreamChat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<ChatResponse> doSimpleStreamChat(@RequestBody MessageRequest request){
         return simpleChatService.steam(request);
     }
+
 
 }
